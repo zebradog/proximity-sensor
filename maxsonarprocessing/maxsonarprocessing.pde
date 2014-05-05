@@ -6,7 +6,7 @@ ControlP5 cp5;
 String port = "/dev/tty.usbmodem3a21";
 int baud = 9600;
 int threshold = 32; //distance in inches
-
+int maxDistance = 255; //max value for single byte. 255" = 21.25'
 
 PFont f; 
 
@@ -20,7 +20,7 @@ void setup()
   cp5.addSlider("threshold")
      .setPosition(10,height-30)
      .setSize(width-80,20)
-     .setRange(0,255)
+     .setRange(0,maxDistance)
      .setValue(threshold)
      ;
   
@@ -44,6 +44,6 @@ void draw ()
      color bg = color(128,64,64);
      if( distance <= threshold) bg = color(64,128,64);
      background( bg );
-     text(""+distance+"\"",width/2,height/2);
+     text(""+distance+"\"",width/2+10,height/2+24);
   }
 }

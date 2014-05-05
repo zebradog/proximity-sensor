@@ -14,11 +14,13 @@ int avgrange=60;//Quantity of values to average (sample size)
 int maxDistance = 255; //max value for single byte. 255" = 21.25'
 byte distance = -1;
 byte prevDistance = -1;
+int pollDelay = 100; //in ms. helps to "debounce" signal
+int baud = 9600;
 
 void setup() {
 
   //This opens up a serial connection to shoot the results back to the PC console
-  Serial.begin(9600);
+  Serial.begin(baud);
 }
 
 void loop() {
@@ -45,6 +47,6 @@ void loop() {
   }
   //reset sample total
   sum = 0;
-  delay(100);
+  delay(pollDelay);
 }
 
