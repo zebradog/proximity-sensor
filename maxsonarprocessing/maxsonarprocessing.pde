@@ -3,7 +3,7 @@ import controlP5.*;
 
 Serial myPort;
 ControlP5 cp5;
-String port = "/dev/tty.usbmodem3a21";
+String port = "/dev/tty.usbmodem"; //string to search for port by
 int baud = 9600;
 int threshold = 32; //distance in inches
 int maxDistance = 255; //max value for single byte. 255" = 21.25'
@@ -24,8 +24,14 @@ void setup()
      .setValue(threshold)
      ;
   
-  // List all the available serial ports:
-  println(Serial.list());
+  //find serial port based on search string
+  String[] ports =  Serial.list();
+  for(int i = 0; i < ports.length; i++){
+        if(ports[i].indexOf(port) >= 0){
+           port = ports[i];
+           break; 
+        };
+  }
   
   // Open the port you are using at the rate you want:
   myPort = new Serial(this, port, baud);
@@ -39,7 +45,7 @@ void draw ()
 {
   if(myPort.available() > 0){
      int distance = myPort.read();
-     println(distance);
+     //println(distance);
      myPort.clear();
      color bg = color(128,64,64);
      if( distance <= threshold) bg = color(64,128,64);
