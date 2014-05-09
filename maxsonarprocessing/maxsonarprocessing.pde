@@ -1,9 +1,15 @@
+//websocket library: http://muthesius.github.io/WebSocketP5/websocketP5-0.1.4/
+
 import processing.serial.*;
 import controlP5.*;
+import muthesius.net.*;
+import org.webbitserver.*;
 
+WebSocketP5 socket;
 Serial myPort;
 ControlP5 cp5;
 String port = "/dev/tty.usbmodem"; //string to search for port by
+int websocketPort = 8080;
 int baud = 9600;
 int threshold = 32; //distance in inches
 int maxDistance = 255; //max value for single byte. 255" = 21.25'
@@ -14,6 +20,8 @@ void setup()
 {
   size( 500, 500 );
   frameRate( 60 );
+  
+  socket = new WebSocketP5(this,8080);
   
   cp5 = new ControlP5(this);
   
@@ -51,5 +59,22 @@ void draw ()
      if( distance <= threshold) bg = color(64,128,64);
      background( bg );
      text(""+distance+"\"",width/2+10,height/2+24);
+     socket.broadcast(""+distance);
   }
+}
+
+void websocketOnMessage(WebSocketConnection con, String msg){
+  println(msg);
+}
+
+void websocketOnOpen(WebSocketConnection con){
+  println("A client joined");
+}
+
+void websocketOnClosed(WebSocketConnection con){
+  println("A client left");
+}
+
+void stop(){
+  socket.stop();
 }
