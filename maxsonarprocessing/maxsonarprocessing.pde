@@ -56,10 +56,12 @@ void draw ()
      //println(distance);
      myPort.clear();
      color bg = color(128,64,64);
-     if( distance <= threshold) bg = color(64,128,64);
+     if( distance <= threshold) {
+       bg = color(64,128,64);
+       socket.broadcast("active");
+     }
      background( bg );
      text(""+distance+"\"",width/2+10,height/2+24);
-     socket.broadcast(""+distance);
   }
 }
 
